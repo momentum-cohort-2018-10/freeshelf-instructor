@@ -52,6 +52,16 @@ initial_books = [
         "with a computer. You'll get more done, faster, using it than you would using "
         "pretty much any other language."
     },
+    {
+        "title":
+        "Two Scoops of Django",
+        "author":
+        "Audrey Roy and Daniel Greenfeld",
+        "url":
+        "https://www.twoscoopspress.com/pages/two-scoops-of-django-1-11-faq",
+        "description":
+        "You like Django? You like ice cream? You like this book."
+    }
 ]
 
 

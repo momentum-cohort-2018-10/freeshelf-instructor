@@ -10,6 +10,7 @@ yapf = "*"
 [packages]
 django = "*"
 django-extensions = "*"
+werkzeug = "*"
 
 [requires]
 python_version = "3.7"
