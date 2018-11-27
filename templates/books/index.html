@@ -11,8 +11,12 @@
       {% if request.user.is_authenticated %}
       <form method="POST" class="dib">
         <input type="hidden" name="book" value="{{ book.pk }}">
-        <button class="f6 ml2" type="submit">          
-          {% if book in favorite_books %}Unfavorite{% else %}Favorite{% endif %}
+        <button class="background-none blue-hover grow-large f4 ml1 bn bg-white" type="submit">
+          {% if book in favorite_books %}
+          &#x2605;
+          {% else %}
+          &#x2606;
+          {% endif %}
         </button>
       </form>
       {% endif %}
@@ -32,6 +36,6 @@
       </div> {% endcomment %}
     </div>
   </div>
-  {% endfor %}      
+  {% endfor %}
 </section>
 {% endblock %}
