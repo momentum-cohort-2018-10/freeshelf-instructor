@@ -54,28 +54,55 @@ initial_books = [
     },
     {
         "title":
-        "Two Scoops of Django",
+        "Eloquent JavaScript",
         "author":
-        "Audrey Roy and Daniel Greenfeld",
+        "Marijn Haverbeke",
         "url":
-        "https://www.twoscoopspress.com/pages/two-scoops-of-django-1-11-faq",
+        "https://eloquentjavascript.net/",
         "description":
-        "You like Django? You like ice cream? You like this book."
+        "This is a book about JavaScript, programming, and the wonders of the digital."
     }
 ]
 
 
 class Command(BaseCommand):
-    help = "Load some initial books"
+    help = "Load some initial data; clears all existing data."
 
     def add_arguments(self, parser):
         pass
 
     def handle(self, *args, **options):
-        from books.models import Book
+        from books.models import Book, Favorite
         print("Deleting books...")
         Book.objects.all().delete()
+
+        books = []
         for book_data in initial_books:
-            book = Book(**book_data)
-            book.save()
+            book = Book.objects.create(**book_data)
+            books.append(book)
         print("Books loaded.")
+
+        from django.contrib.auth.models import User
+        from mimesis import Person
+
+        print("Deleting users...")
+        User.objects.filter(is_superuser=False).delete()
+
+        users = []
+        person = Person()
+        for _ in range(5):
+            user = User.objects.create_user(person.username(), person.email(),
+                                            'password')
+            users.append(user)
+        print("Users created")
+
+        Favorite.objects.all().delete()
+        Favorite.objects.create(book=books[0], user=users[0])
+        Favorite.objects.create(book=books[0], user=users[1])
+        Favorite.objects.create(book=books[0], user=users[2])
+        Favorite.objects.create(book=books[0], user=users[3])
+        Favorite.objects.create(book=books[1], user=users[0])
+        Favorite.objects.create(book=books[1], user=users[1])
+        Favorite.objects.create(book=books[2], user=users[0])
+        Favorite.objects.create(book=books[2], user=users[1])
+        Favorite.objects.create(book=books[2], user=users[2])
