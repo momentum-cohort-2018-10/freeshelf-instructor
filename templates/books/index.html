@@ -3,19 +3,34 @@
 
 {% block main %}
 <section id="books">
-  <h2 class="mt0">Recently added books</h2>
+  <nav id="category-nav" class="flex items-center mb2">
+    <div>
+      Books by category:
+    </div>
+    <ul class="list ml1 pa0 flex flex-wrap">
+      {% for category in categories %}
+      <li class="{% if not forloop.last %}mr2 pr2 bw1 br{% endif %}">
+        <a href="{% url 'category_index' category_slug=category.slug %}">{{ category.name }}</a>
+      </li>            
+      {% endfor %}
+    </ul>
+  </nav>
+
+  <h2 class="mt0">
+    {{ header }}    
+  </h2>
   {% for book in books %}
   <div class="mv3">
-    <div class="normal f3">
+    <div class="normal f3" id="book-{{ book.pk }}">
       <a href="{{ book.url }}">{{ book.title }}</a> <span class="f4">by {{ book.author }}</span>
       {% if request.user.is_authenticated %}
-      <form method="POST" class="dib">
-        <input type="hidden" name="book" value="{{ book.pk }}">
+      <form method="POST" action="{% url 'toggle_favorite' book_id=book.pk %}" class="dib">
+        {% csrf_token %}
         <button class="background-none blue-hover grow-large f4 ml1 bn bg-white" type="submit">
           {% if book in favorite_books %}
-          &#x2605;
+          &#x2605; <!-- filled in star -->
           {% else %}
-          &#x2606;
+          &#x2606; <!-- empty star -->
           {% endif %}
         </button>
       </form>
@@ -28,12 +43,12 @@
       <div class="mr2 pr2 bw1 br green">
         Favorited {{ book.num_of_favorites }} time{{ book.num_of_favorites|pluralize }}
       </div>
-      <div class="mr2 pr2 bw1">
+      <div class="mr2 pr2 bw1 br">
         added {{ book.created_at|date:"Y-m-d" }}
       </div>
-      {% comment %} <div>
-        Category: <a href="#">Python</a>
-      </div> {% endcomment %}
+      <div>
+        Category: <a href="{% url 'category_index' category_slug=book.category.slug %}">{{ book.category }}</a>
+      </div>
     </div>
   </div>
   {% endfor %}

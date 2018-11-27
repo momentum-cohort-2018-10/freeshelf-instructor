@@ -22,6 +22,15 @@ from users import views as users_views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', books_views.book_index, name='book_list'),
+    path(
+        'books/<int:book_id>/favorite/',
+        books_views.toggle_favorite,
+        name='toggle_favorite'),
+    path(
+        'category/<slug:category_slug>/',
+        books_views.category_index,
+        name="category_index"),
+    path('favorites/', books_views.favorites_index, name='favorites_index'),
     path('register/', users_views.register, name='register'),
     path('accounts/', include('django.contrib.auth.urls')),
 ]

@@ -11,7 +11,9 @@ class Book(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     favorited_users = models.ManyToManyField(
-        User, through='Favorite', related_name='favorite_books')
+        to=User, through='Favorite', related_name='favorite_books')
+    category = models.ForeignKey(
+        to='Category', on_delete=models.SET_NULL, null=True)
 
     def __str__(self):
         if self.title and self.author:
@@ -30,3 +32,14 @@ class Favorite(models.Model):
             'book',
             'user',
         )
+
+
+class Category(models.Model):
+    name = models.CharField(max_length=255)
+    slug = models.SlugField()
+
+    class Meta:
+        verbose_name_plural = "categories"
+
+    def __str__(self):
+        return self.name

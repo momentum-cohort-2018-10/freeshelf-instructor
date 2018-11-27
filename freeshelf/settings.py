@@ -128,3 +128,12 @@ LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 
 INTERNAL_IPS = ['127.0.0.1']
+
+from django.contrib.messages import constants as messages
+
+MESSAGE_TAGS = {
+    messages.SUCCESS: 'bg-light-green pa3 br3 ma3',
+    messages.INFO: 'bg-light-blue pa3 br3 ma3',
+    messages.WARNING: 'bg-yellow pa3 br3 ma3',
+    messages.ERROR: 'bg-dark-red white pa3 br3 ma3',
+}
