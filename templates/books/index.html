@@ -12,7 +12,7 @@
       <form method="POST" class="dib">
         <input type="hidden" name="book" value="{{ book.pk }}">
         <button class="f6 ml2" type="submit">          
-          {% if book.favorite_of_user %}Unfavorite{% else %}Favorite{% endif %}
+          {% if book in favorite_books %}Unfavorite{% else %}Favorite{% endif %}
         </button>
       </form>
       {% endif %}

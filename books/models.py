@@ -10,10 +10,8 @@ class Book(models.Model):
     url = models.URLField(unique=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-
-    def is_favorited_by(self, user):
-        """Given a user, let us know whether this book is favorited by that user."""
-        return self.favorites.filter(user=user).count() > 0
+    favorited_users = models.ManyToManyField(
+        User, through='Favorite', related_name='favorite_books')
 
     def __str__(self):
         if self.title and self.author:
