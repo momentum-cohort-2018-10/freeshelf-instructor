@@ -12,6 +12,7 @@ mimesis = "*"
 django = "*"
 django-extensions = "*"
 werkzeug = "*"
+django-crispy-forms = "*"
 
 [requires]
 python_version = "3.7"

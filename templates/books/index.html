@@ -1,61 +1,28 @@
+{% extends "base.html" %}
 {% load staticfiles %}
-<!DOCTYPE html>
-<html lang="en">
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <link rel="stylesheet" href="{% static 'css/tachyons.min.css' %}" />
-  <title>Freeshelf</title>
-</head>
-
-<body class="sans-serif pv2 ph4">
-  <header class="flex items-center justify-between bg-green white ph3">
-    <div id="title">
-      <h1 class="white">Freeshelf</h1>
-    </div>
-    <!-- <div id="account-menu">
-      <a class="washed-blue" href="#">Login</a> | <a class="washed-blue" href="#">Register</a>
-    </div> -->
-  </header>
-  <nav id="category-nav" class="flex items-center">
-    <!-- <div>
-      Books by category:
-    </div>
-    <ul class="list ml1 pa0 flex flex-wrap">
-      <li class="mr2 pr2 bw1 br"><a href="#">CSS</a></li>
-      <li class="mr2 pr2 bw1 br"><a href="#">HTML</a></li>
-      <li class="mr2 pr2 bw1 br"><a href="#">JavaScript</a></li>
-      <li class="mr2 pr2 bw1 br"><a href="#">Python</a></li>
-      <li class=""><a href="#">R</a></li>
-    </ul> -->
-  </nav>
-  <main>
-    <section id="books">
-      <h2>Recently added books</h2>
-      {% for book in books %}
-      <div class="mv3">
-        <div class="normal f3">
-          <a href="{{ book.url }}">{{ book.title }}</a> <span class="f4">by {{ book.author }}</span></div>
-        <p class="lh-copy">
-          {{ book.description }}
-        </p>
-        <!-- <div class="flex">
-          <div class="mr2 pr2 bw1 br green">
-            Favorited 4 times
-          </div>
-          <div class="mr2 pr2 bw1 br">
-            added 2018-11-07
-          </div>
-          <div>
-            Category: <a href="#">Python</a>
-          </div>
-        </div> -->
+{% block main %}
+<section id="books">
+  <h2 class="mt0">Recently added books</h2>
+  {% for book in books %}
+  <div class="mv3">
+    <div class="normal f3">
+      <a href="{{ book.url }}">{{ book.title }}</a> <span class="f4">by {{ book.author }}</span></div>
+    <p class="lh-copy">
+      {{ book.description }}
+    </p>
+    <!-- <div class="flex">
+      <div class="mr2 pr2 bw1 br green">
+        Favorited 4 times
       </div>
-      {% endfor %}      
-    </section>
-  </main>
-</body>
-
-</html>
+      <div class="mr2 pr2 bw1 br">
+        added 2018-11-07
+      </div>
+      <div>
+        Category: <a href="#">Python</a>
+      </div>
+    </div> -->
+  </div>
+  {% endfor %}      
+</section>
+{% endblock %}
