@@ -7,21 +7,30 @@
   {% for book in books %}
   <div class="mv3">
     <div class="normal f3">
-      <a href="{{ book.url }}">{{ book.title }}</a> <span class="f4">by {{ book.author }}</span></div>
+      <a href="{{ book.url }}">{{ book.title }}</a> <span class="f4">by {{ book.author }}</span>
+      {% if request.user.is_authenticated %}
+      <form method="POST" class="dib">
+        <input type="hidden" name="book" value="{{ book.pk }}">
+        <button class="f6 ml2" type="submit">          
+          {% if book.favorite_of_user %}Unfavorite{% else %}Favorite{% endif %}
+        </button>
+      </form>
+      {% endif %}
+    </div>
     <p class="lh-copy">
       {{ book.description }}
     </p>
-    <!-- <div class="flex">
+   <div class="flex">
       <div class="mr2 pr2 bw1 br green">
-        Favorited 4 times
+        Favorited {{ book.num_of_favorites }} time{{ book.num_of_favorites|pluralize }}
       </div>
-      <div class="mr2 pr2 bw1 br">
-        added 2018-11-07
+      <div class="mr2 pr2 bw1">
+        added {{ book.created_at|date:"Y-m-d" }}
       </div>
-      <div>
+      {% comment %} <div>
         Category: <a href="#">Python</a>
-      </div>
-    </div> -->
+      </div> {% endcomment %}
+    </div>
   </div>
   {% endfor %}      
 </section>
