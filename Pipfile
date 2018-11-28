@@ -6,7 +6,6 @@ verify_ssl = true
 [dev-packages]
 prospector = "*"
 yapf = "*"
-mimesis = "*"
 black = "*"
 
 [packages]
@@ -19,6 +18,7 @@ black = "*"
 psycopg2 = "*"
 gunicorn = "*"
 django-heroku = "*"
+mimesis = "*"
 
 [requires]
 python_version = "3.7"
