@@ -25,6 +25,7 @@ def favorites_index(request):
 
 
 def render_book_list(request, header, books, category=None):
+    books = books.select_related('category')
     books = books.annotate(num_of_favorites=Count('favorites'))
     favorite_books = []
     if request.user.is_authenticated:
