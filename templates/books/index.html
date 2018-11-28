@@ -47,7 +47,12 @@
         added {{ book.created_at|date:"Y-m-d" }}
       </div>
       <div>
-        Category: <a href="{% url 'category_index' category_slug=book.category.slug %}">{{ book.category }}</a>
+        Category: 
+        {% if book.category %}
+        <a href="{% url 'category_index' category_slug=book.category.slug %}">{{ book.category }}</a>
+        {% else %}
+        None
+        {% endif %}
       </div>
     </div>
   </div>

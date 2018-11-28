@@ -16,6 +16,7 @@ werkzeug = "*"
 django-crispy-forms = "*"
 django-debug-toolbar = "*"
 black = "*"
+psycopg2 = "*"
 
 [requires]
 python_version = "3.7"
