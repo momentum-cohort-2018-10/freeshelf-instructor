@@ -7,6 +7,7 @@ verify_ssl = true
 prospector = "*"
 yapf = "*"
 mimesis = "*"
+black = "*"
 
 [packages]
 django = "*"
@@ -14,6 +15,10 @@ django-extensions = "*"
 werkzeug = "*"
 django-crispy-forms = "*"
 django-debug-toolbar = "*"
+black = "*"
 
 [requires]
 python_version = "3.7"
+
+[pipenv]
+allow_prereleases = true
