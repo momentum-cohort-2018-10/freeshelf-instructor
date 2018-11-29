@@ -123,6 +123,7 @@ class Command(BaseCommand):
         from books.models import Book, Favorite, Category
         from django.contrib.auth.models import User
         from mimesis import Person
+        import random
 
         print("Deleting categories...")
         Category.objects.all().delete()
@@ -159,12 +160,9 @@ class Command(BaseCommand):
         print("Users created")
 
         Favorite.objects.all().delete()
-        Favorite.objects.create(book=books[0], user=users[0])
-        Favorite.objects.create(book=books[0], user=users[1])
-        Favorite.objects.create(book=books[0], user=users[2])
-        Favorite.objects.create(book=books[0], user=users[3])
-        Favorite.objects.create(book=books[1], user=users[0])
-        Favorite.objects.create(book=books[1], user=users[1])
-        Favorite.objects.create(book=books[2], user=users[0])
-        Favorite.objects.create(book=books[2], user=users[1])
-        Favorite.objects.create(book=books[2], user=users[2])
+
+        for book in books:
+            num_favs = random.randint(0, 5)
+            random.shuffle(users)
+            for i in range(num_favs):
+                book.favorites.create(user=users[i])
