@@ -28,8 +28,8 @@ def render_book_list(request, header, books, category=None):
     books = books.select_related('category')
     books = books.annotate(num_of_favorites=Count('favorites'))
     favorite_books = []
+    wtf += 1
     if request.user.is_authenticated:
-        wtf += 1
         favorite_books = request.user.favorite_books.all()
     books = books.order_by('-created_at')
     return render(
