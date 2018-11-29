@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block main %}
+<h2>Propose new book</h2>
+<form action="{% url 'propose_new_book' %}" method="POST">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit">Propose book</button>
+</form>
+{% endblock %}

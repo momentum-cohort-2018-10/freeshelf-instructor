@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.views.decorators.http import require_POST
 from django.contrib.auth.views import login_required
 from books.models import Book, Category
+from books.forms import ProposedBookForm
 from django.db.models import Count
 from django.contrib import messages
 
@@ -25,8 +26,9 @@ def favorites_index(request):
 
 
 def render_book_list(request, header, books, category=None):
-    books = books.select_related('category')
-    books = books.annotate(num_of_favorites=Count('favorites'))
+    books = books.filter(active=True).select_related('category').annotate(
+        num_of_favorites=Count('favorites'))
+
     favorite_books = []
     if request.user.is_authenticated:
         favorite_books = request.user.favorite_books.all()
@@ -59,3 +61,21 @@ def toggle_favorite(request, book_id):
 
     messages.add_message(request, messages.INFO, message)
     return redirect(f'/#book-{book.pk}')
+
+
+def propose_new_book(request):
+    if request.method == "POST":
+        form = ProposedBookForm(request.POST)
+        if form.is_valid():
+            book = form.save()
+            book.active = False
+            book.suggested = True
+            book.save()
+            messages.add_message(
+                request, messages.SUCCESS,
+                f"Your recommendation of {book} has been noted. Thanks!")
+            return redirect(to='book_list')
+    else:
+        form = ProposedBookForm()
+
+    return render(request, "books/propose_new_book.html", {"form": form})

@@ -27,6 +27,10 @@ urlpatterns = [
         books_views.toggle_favorite,
         name='toggle_favorite'),
     path(
+        'books/propose/',
+        books_views.propose_new_book,
+        name='propose_new_book'),
+    path(
         'category/<slug:category_slug>/',
         books_views.category_index,
         name="category_index"),

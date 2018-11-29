@@ -7,13 +7,15 @@ class Book(models.Model):
     title = models.CharField(max_length=255)
     author = models.CharField(max_length=255)
     description = models.TextField()
-    url = models.URLField(unique=True)
+    url = models.URLField("URL", unique=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     favorited_users = models.ManyToManyField(
         to=User, through='Favorite', related_name='favorite_books')
     category = models.ForeignKey(
         to='Category', on_delete=models.SET_NULL, null=True)
+    active = models.BooleanField(default=True)
+    suggested = models.BooleanField(default=False)
 
     def __str__(self):
         if self.title and self.author:
