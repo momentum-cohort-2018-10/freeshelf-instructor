@@ -1,4 +1,6 @@
 from django.core.management.base import BaseCommand
+from django.contrib.auth.models import User
+from books.models import Book, Favorite, Category
 
 initial_categories = [
     {
@@ -119,23 +121,23 @@ class Command(BaseCommand):
     def add_arguments(self, parser):
         pass
 
-    def handle(self, *args, **options):
-        from books.models import Book, Favorite, Category
-        from django.contrib.auth.models import User
-        from mimesis import Person
-        import random
-
+    def create_categories(self):
         print("Deleting categories...")
         Category.objects.all().delete()
 
-        print("Deleting books...")
-        Book.objects.all().delete()
-
+        print("Creating categories...")
         categories = {}
         for cat_data in initial_categories:
             category = Category.objects.create(**cat_data)
             categories[category.slug] = category
 
+        return categories
+
+    def create_books(self, categories):
+        print("Deleting books...")
+        Book.objects.all().delete()
+
+        print("Creating books...")
         books = []
         for book_data in initial_books:
             cat_slug = book_data.pop('category')
@@ -146,18 +148,25 @@ class Command(BaseCommand):
                 book = Book.objects.create(**book_data)
 
             books.append(book)
-        print("Books loaded.")
 
+        return books
+
+    def create_users(self):
+        from mimesis import Person
         print("Deleting users...")
         User.objects.filter(is_superuser=False).delete()
 
+        print("Creating users....")
         users = []
         person = Person()
         for _ in range(5):
             user = User.objects.create_user(person.username(), person.email(),
                                             "password")
             users.append(user)
-        print("Users created")
+        return users
+
+    def create_favorites(self, books, users):
+        import random
 
         Favorite.objects.all().delete()
 
@@ -166,3 +175,9 @@ class Command(BaseCommand):
             random.shuffle(users)
             for i in range(num_favs):
                 book.favorites.create(user=users[i])
+
+    def handle(self, *args, **options):
+        categories = self.create_categories()
+        books = self.create_books(categories)
+        users = self.create_users()
+        self.create_favorites(books, users)
