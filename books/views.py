@@ -6,6 +6,7 @@ from books.forms import ProposedBookForm
 from django.db.models import Count
 from django.contrib import messages
 from django.views.generic.base import TemplateView
+from django.http import JsonResponse
 
 
 def book_index(request):
@@ -55,13 +56,18 @@ def toggle_favorite(request, book_id):
         # if so, delete favorite
         book.favorites.get(user=request.user).delete()
         message = f"You have unfavorited {book}."
+        body = {"favorite": False}
     else:
         # else create favorite
         book.favorites.create(user=request.user)
         message = f"You have favorited {book}."
+        body = {"favorite": True}
 
-    messages.add_message(request, messages.INFO, message)
-    return redirect(to='book_list')
+    if request.is_ajax():
+        return JsonResponse(body)
+    else:
+        messages.add_message(request, messages.INFO, message)
+        return redirect(to='book_list')
 
 
 def propose_new_book(request):

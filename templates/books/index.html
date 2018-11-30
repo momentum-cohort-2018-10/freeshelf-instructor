@@ -1,6 +1,10 @@
 {% extends "base.html" %}
 {% load staticfiles %}
 
+{% block javascript %}
+<script src="{% static 'js/index.js' %}" defer></script>
+{% endblock %}
+
 {% block main %}
 <section id="books">
   <nav id="category-nav" class="flex items-center mb2">
@@ -26,7 +30,7 @@
       {% if request.user.is_authenticated %}
       <form method="POST" action="{% url 'toggle_favorite' book_id=book.pk %}" class="dib">
         {% csrf_token %}
-        <button class="background-none blue-hover grow-large f4 ml1 bn bg-white" type="submit">
+        <button data-book-id="{{ book.id }}" class="fav-book background-none blue-hover grow-large f4 ml1 bn bg-white" type="submit">
           {% if book in favorite_books %}
           &#x2605; <!-- filled in star -->
           {% else %}
