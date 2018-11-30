@@ -37,6 +37,7 @@ urlpatterns = [
     path('favorites/', books_views.favorites_index, name='favorites_index'),
     path('register/', users_views.register, name='register'),
     path('accounts/', include('django.contrib.auth.urls')),
+    path('about/', books_views.AboutView.as_view(), name='about'),
 ]
 
 if settings.DEBUG:

@@ -20,11 +20,12 @@
       {% if request.user.is_authenticated %}
         <span class="washed-blue">Logged in as {{ request.user }}</span> |
         <a class="no-underline underline-hover washed-blue" href="{% url "favorites_index" %}">Favorite books</a> |
-        <a class="no-underline underline-hover washed-blue" href="{% url "logout" %}">Logout</a>
+        <a class="no-underline underline-hover washed-blue" href="{% url "logout" %}">Logout</a> |
       {% else %}
         <a class="no-underline underline-hover washed-blue" href="{% url "login" %}">Login</a> | 
-        <a class="no-underline underline-hover washed-blue" href="{% url 'register' %}">Register</a>
+        <a class="no-underline underline-hover washed-blue" href="{% url 'register' %}">Register</a> |
       {% endif %}
+      <a class="no-underline underline-hover washed-blue" href="{% url 'about' %}">About</a>
     </div>
   </header>
   <main>

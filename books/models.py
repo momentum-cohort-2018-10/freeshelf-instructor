@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.template.defaultfilters import slugify
 
 
 # Create your models here.
@@ -38,10 +39,16 @@ class Favorite(models.Model):
 
 class Category(models.Model):
     name = models.CharField(max_length=255)
-    slug = models.SlugField()
+    slug = models.SlugField(unique=True)
 
     class Meta:
         verbose_name_plural = "categories"
 
     def __str__(self):
         return self.name
+
+    # pylint:disable=arguments-differ
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.name)
+        return super().save(*args, **kwargs)

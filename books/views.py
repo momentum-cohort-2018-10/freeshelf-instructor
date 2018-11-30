@@ -5,6 +5,7 @@ from books.models import Book, Category
 from books.forms import ProposedBookForm
 from django.db.models import Count
 from django.contrib import messages
+from django.views.generic.base import TemplateView
 
 
 def book_index(request):
@@ -60,7 +61,7 @@ def toggle_favorite(request, book_id):
         message = f"You have favorited {book}."
 
     messages.add_message(request, messages.INFO, message)
-    return redirect(f'/#book-{book.pk}')
+    return redirect(to='book_list')
 
 
 def propose_new_book(request):
@@ -68,9 +69,6 @@ def propose_new_book(request):
         form = ProposedBookForm(request.POST)
         if form.is_valid():
             book = form.save()
-            book.active = False
-            book.suggested = True
-            book.save()
             messages.add_message(
                 request, messages.SUCCESS,
                 f"Your recommendation of {book} has been noted. Thanks!")
@@ -79,3 +77,7 @@ def propose_new_book(request):
         form = ProposedBookForm()
 
     return render(request, "books/propose_new_book.html", {"form": form})
+
+
+class AboutView(TemplateView):
+    template_name = "about.html"
