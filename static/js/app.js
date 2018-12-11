@@ -21,19 +21,19 @@ $('.toggle-favorite-form').on('submit', function (event) {
     url: event.target.action,
     data: {
       'csrfmiddlewaretoken': csrfToken
-    },
-    success: function (results) {
-      let starToUse
-      if (results.favorite) {
-        starToUse = FILLED_IN_STAR
-      } else {
-        starToUse = EMPTY_STAR
-      }
-      $(event.target).find('button[type=submit]').html(starToUse)
-
-      $(`#book-${results.book_id}`).find('.book-num-favorites').text(
-        `Favorited ${pluralize(results.num_of_favorites, 'time')}`
-      )
     }
+  }).then(function (results) {
+    let starToUse
+    if (results.favorite) {
+      starToUse = FILLED_IN_STAR
+    } else {
+      starToUse = EMPTY_STAR
+    }
+    $(event.target).find('button[type=submit]').html(starToUse)
+    return results
+  }).then(function (results) {
+    $(`#book-${results.book_id}`).find('.book-num-favorites').text(
+      `Favorited ${pluralize(results.num_of_favorites, 'time')}`
+    )
   })
 })
