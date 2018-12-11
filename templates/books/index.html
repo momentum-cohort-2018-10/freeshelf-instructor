@@ -20,11 +20,11 @@
     {{ header }}    
   </h2>
   {% for book in books %}
-  <div class="mv3">
-    <div class="normal f3" id="book-{{ book.pk }}">
+  <div class="mv3" id="book-{{ book.pk }}">
+    <div class="normal f3">
       <a href="{{ book.url }}">{{ book.title }}</a> <span class="f4">by {{ book.author }}</span>
       {% if request.user.is_authenticated %}
-      <form method="POST" action="{% url 'toggle_favorite' book_id=book.pk %}" class="dib">
+      <form method="POST" action="{% url 'toggle_favorite' book_id=book.pk %}" class="dib toggle-favorite-form">
         {% csrf_token %}
         <button class="background-none blue-hover grow-large f4 ml1 bn bg-white" type="submit">
           {% if book in favorite_books %}
@@ -40,7 +40,7 @@
       {{ book.description }}
     </p>
    <div class="flex">
-      <div class="mr2 pr2 bw1 br green">
+      <div class="book-num-favorites mr2 pr2 bw1 br green">
         Favorited {{ book.num_of_favorites }} time{{ book.num_of_favorites|pluralize }}
       </div>
       <div class="mr2 pr2 bw1 br">

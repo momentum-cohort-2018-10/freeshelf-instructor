@@ -1,11 +1,14 @@
-from django.shortcuts import render, redirect
-from django.views.decorators.http import require_POST
-from django.contrib.auth.views import login_required
-from books.models import Book, Category
-from books.forms import ProposedBookForm
-from django.db.models import Count
 from django.contrib import messages
+from django.contrib.auth.views import login_required
+from django.db.models import Count
+from django.http import JsonResponse
+from django.shortcuts import redirect, render
+from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_POST
 from django.views.generic.base import TemplateView
+
+from books.forms import ProposedBookForm
+from books.models import Book, Category
 
 
 def book_index(request):
@@ -49,17 +52,21 @@ def render_book_list(request, header, books, category=None):
 def toggle_favorite(request, book_id):
     # get the book to toggle favorite on
     book = Book.objects.get(pk=book_id)
-
     # see if current user has this book as a favorite
     if book in request.user.favorite_books.all():
         # if so, delete favorite
+        favorited = False
         book.favorites.get(user=request.user).delete()
         message = f"You have unfavorited {book}."
     else:
         # else create favorite
+        favorited = True
         book.favorites.create(user=request.user)
         message = f"You have favorited {book}."
 
+    if request.is_ajax():
+        return JsonResponse({"book_id": book.id, "favorite": favorited, "num_of_favorites": book.favorites.count()})
+    
     messages.add_message(request, messages.INFO, message)
     return redirect(to='book_list')
 
